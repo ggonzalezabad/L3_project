@@ -1,2 +1,3 @@
 # L3_project
-Gaussian based L3 algorithm with improved I/O
+Gaussian based L3 algorithm with improved I/O. 
+Collabaration between Chris Miller and Gonzalo Gonzalez
