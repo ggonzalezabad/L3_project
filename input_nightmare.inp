@@ -8,7 +8,6 @@
 Use CTM
 .TRUE.
 
-
 # ---------------------------------------
 # List of Orbits 
 # ---------------------------------------
@@ -16,23 +15,23 @@ List of L2 Data
 orbits_list.inp
 
 # ---------------------------------------
-# L2 Fields to Read (and norm factors)
+# L2 Fields to Read (name : norm factors : data type)
 # ---------------------------------------
 L2 fields to read
-ColumnAmount : 1.0d15
-AirMassFactor : 1.0 
-ScatteringWeights : 1.0
-Longitude : 1.0
-Latitude : 1.0
-PressureLevels : 1.0
+ColumnAmount : 1.0d15 : 8
+AirMassFactor : 1.0 : 8
+ScatteringWeights : 1.0 : 8
+Longitude : 1.0 : 4
+Latitude : 1.0 : 4
+PressureLevels : 1.0 : 4
 
 # ---------------------------------------
-# CTM Fields to Read
+# CTM Fields to Read (name : norm factors : data type)
 # ---------------------------------------
 CTM Fields to Read
-Longitude : 1.0
-Latitude : 1.0
-Pressure : 1.0
+Longitude : 1.0 : 4
+Latitude : 1.0 : 4
+Pressure : 1.0 : 4
 
 # ---------------------------------------
 # Output File Name
