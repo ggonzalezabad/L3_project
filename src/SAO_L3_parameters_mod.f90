@@ -4,4 +4,10 @@ MODULE SAO_L3_parameters_mod
 
   INTEGER*4, PARAMETER :: MAXLEN = 254
 
+  ! ----------
+  ! File units
+  ! ----------
+  INTEGER*4, PARAMETER :: funit_ctr = 11 !Input control file
+  INTEGER*4, PARAMETER :: funit_L2  = 12 !L2 file list
+
 END MODULE SAO_L3_parameters_mod

@@ -1,12 +1,11 @@
 PROGRAM test_main
 
-  USE SAO_L3_parameters_mod
   USE SAO_L3_read_control_file_mod, ONLY : input, in_ctr_file, &
        read_input_control_file
 
   IMPLICIT NONE
 
-  INTEGER*4 :: errstat
+  INTEGER*4 :: errstat, i
   ! -----------------------
   ! Read input control file
   ! -----------------------
@@ -19,7 +18,16 @@ PROGRAM test_main
   ! ------------------------------------------------------
   CALL read_input_control_file(errstat)
 
-  print*, input
+  ! ------------------
+  ! Read L2 orbit list
+  ! ------------------
+  CALL read_l2_file_list(errstat)
+
+  ! --------------------------------
+  ! Deallocate allocatable variables
+  ! --------------------------------
+  CALL deallocate(errstat)
+
   STOP
 
 END PROGRAM test_main

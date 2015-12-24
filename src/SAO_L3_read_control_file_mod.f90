@@ -1,6 +1,6 @@
 MODULE SAO_L3_read_control_file_mod
 
-  USE SAO_L3_parameters_mod
+  USE SAO_L3_parameters_mod, ONLY: MAXLEN, funit_ctr
   USE SAO_L3_type_mod
 
   IMPLICIT NONE
@@ -8,7 +8,6 @@ MODULE SAO_L3_read_control_file_mod
   ! ------------------------------------------------
   ! Strings to locate sections in control input file
   ! ------------------------------------------------
-  INTEGER*4,         PARAMETER :: funit_ctr    = 11
   CHARACTER(LEN=7),  PARAMETER :: yn_ctm_str ='Use CTM'
   CHARACTER(LEN=15), PARAMETER :: L2_orbits_str ='List of L2 Data'
   CHARACTER(LEN=17), PARAMETER :: L2_read_fields_str ='L2 Fields to Read'
@@ -114,7 +113,7 @@ CONTAINS
     errmsg = 'Error reading '// L2_orbits_str
     CALL skip_to_filemark(funit_ctr, L2_orbits_str, &
          lastline, local_error)
-    READ(funit_ctr, *, ERR = 98, IOSTAT=local_error) input%orbit_list_filename
+    READ(funit_ctr, '(A)', ERR = 98, IOSTAT=local_error) input%orbit_list_filename
     ! L2 fields to be read
     errmsg = 'Error reading '// L2_read_fields_str
     input%n_L2_fields = 0

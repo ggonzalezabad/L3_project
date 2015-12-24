@@ -12,7 +12,7 @@ Use CTM
 # List of Orbits 
 # ---------------------------------------
 List of L2 Data
-orbits_list.inp
+/data/tempo2/ggonzale/GIT/L3_project/test_l2_orbits.inp
 
 # ---------------------------------------
 # L2 Fields to Read (name : norm factors : data type)
