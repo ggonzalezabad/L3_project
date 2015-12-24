@@ -1,0 +1,7 @@
+MODULE SAO_L3_parameters_mod
+
+  IMPLICIT NONE
+
+  INTEGER*4, PARAMETER :: MAXLEN = 254
+
+END MODULE SAO_L3_parameters_mod

@@ -3,10 +3,10 @@
 # ========================================
 
 # ---------------------------------------
-# Use CTM?
+# Use CTM? .TRUE./.FALSE.
 # ---------------------------------------
 Use CTM
-.TRUE.
+.FALSE.
 
 # ---------------------------------------
 # List of Orbits 
@@ -17,7 +17,7 @@ orbits_list.inp
 # ---------------------------------------
 # L2 Fields to Read (name : norm factors : data type)
 # ---------------------------------------
-L2 fields to read
+L2 Fields to Read
 ColumnAmount : 1.0d15 : 8
 AirMassFactor : 1.0 : 8
 ScatteringWeights : 1.0 : 8
@@ -36,7 +36,7 @@ Pressure : 1.0 : 4
 # ---------------------------------------
 # Output File Name
 # ---------------------------------------
-Output file name
+Output File Name
 OMHCHO_L3_2000601.he5
 
 # ---------------------------------------
@@ -51,7 +51,7 @@ grid_1x1.inp
 # 2) Latitude
 # 2) Altitude
 # ---------------------------------------
-L2 Coordinate fields
+L2 Coordinate Fields
 Longitude
 Latitude
 PressureLevels
@@ -62,7 +62,7 @@ PressureLevels
 # 2) Latitude
 # 2) Altitude
 # ---------------------------------------
-L2 Coordinate fields
+CTM Coordinate Fields
 Longitude
 Latitude
 Pressure
@@ -76,22 +76,34 @@ ColumnAmount
 # ---------------------------------------
 # CTM Fields to Grid
 # ---------------------------------------
-L2 Fields to Grid
+CTM Fields to Grid
 Temperature
 
-# ---------------------------------------
+# ----------------------------------------------
 # L2 Filters
-# ---------------------------------------
+# Each line is a filter (fields can be repeated)
+# 1 for .EQ.
+# 2 for .LE.
+# 3 for .LT.
+# 4 for .GE.
+# 5 for .GT.
+# 6 for .NE.
+# 11 for .AND.
+# 12  for .OR. 
+# Fieldname : [11/12] : [1:6] : value : [1:6] : value
+# ----------------------------------------------
 L2 Filters
-MainDataQualityFlag : [0,0] 
-CloudFraction:
+MainDataQualityFlag : 12  : 4 : 23 : 2 : 25
+MainDataQualityFlag : 12  : 2 : 25 : 4 : 23
+CloudFraction: 11 : 1 : 0 : 1 : 0
 
 # ---------------------------------------
 # CTM Filters
+# Idem scheme for L2 filters
 # ---------------------------------------
 CTM Filters
-Temperature : [270,280] ; [300,310]
-WindSpeed : [2,3]
+Temperature : 11 : 5 : 325 : 6 : 325
+WindSpeed : 11 : 2 : 20 : 6 : 20
 
 # ---------------------------------------
 # Gridding Options
@@ -100,10 +112,11 @@ WindSpeed : [2,3]
 #     - 2 Point Spread Function
 # ---------------------------------------
 Gridding Options
+2
 
 # ---------------------------------------
 # AMF Recalculation
-# (1) T/F
+# (1) .TRUE./.FALSE.
 # (2) L2 VCD field
 # (3) L2 AMF
 # (4) L2 Scattering Weights
@@ -112,8 +125,13 @@ Gridding Options
 # (7) CTM Pressure grid
 # ---------------------------------------
 AMF Recalculation
-
-
+.TRUE.
+L2_VCD_field
+L2_AMF
+L2_Scattering_Weights
+L2_Pressure_grid
+CTM_Profile
+CTM_Pressure_grid
 
 
 
