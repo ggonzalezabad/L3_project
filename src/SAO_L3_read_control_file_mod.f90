@@ -1,7 +1,7 @@
 MODULE SAO_L3_read_control_file_mod
 
   USE SAO_L3_parameters_mod, ONLY: MAXLEN, funit_ctr
-  USE SAO_L3_type_mod
+  USE SAO_L3_variables_mod, ONLY: input
 
   IMPLICIT NONE
 
@@ -23,8 +23,6 @@ MODULE SAO_L3_read_control_file_mod
   CHARACTER(LEN=16), PARAMETER :: grid_option_str = 'Gridding Options'
   CHARACTER(LEN=17), PARAMETER :: yn_AMF_str = 'AMF Recalculation'
 
-  ! Type variable to hold input file info
-  TYPE(INPUT_FILE_TYPE), SAVE :: input
   ! Input filename variable
   CHARACTER(LEN=MAXLEN) :: in_ctr_file
 
@@ -154,12 +152,12 @@ CONTAINS
     errmsg = 'Error reading '// out_file_str
     CALL skip_to_filemark(funit_ctr, out_file_str, &
          lastline, local_error)
-    READ(funit_ctr, *, ERR = 98, IOSTAT=local_error) input%output_filename
+    READ(funit_ctr, '(A)', ERR = 98, IOSTAT=local_error) input%output_filename
     ! Grid specifcation file
     errmsg = 'Error reading '// out_grid_str
     CALL skip_to_filemark(funit_ctr, out_grid_str, &
          lastline, local_error)
-    READ(funit_ctr, *, ERR = 98, IOSTAT=local_error) input%grid_filename
+    READ(funit_ctr, '(A)', ERR = 98, IOSTAT=local_error) input%grid_filename
     ! L2 coordinates fields
     errmsg = 'Error reading '// L2_coor_str
     CALL skip_to_filemark(funit_ctr, L2_coor_str, &
@@ -188,22 +186,65 @@ CONTAINS
          lastline, local_error)
     i_dummy = 0
     DO
+       pos1 = 1
        READ(funit_ctr, '(A)', ERR = 98, IOSTAT=local_error) tmpline
-       IF ( tmpline(2:2) .EQ. ' ') EXIT
-       input%L2_grid_fields(i_dummy+1) = tmpline
-       i_dummy = i_dummy + 1
+       IF (tmpline(2:2) .EQ. ' ') EXIT
+       pos2 = INDEX(tmpline(pos1:),":")
+       input%L2_grid_fields(i_dummy+1) = tmpline(pos1:pos1+pos2-2) 
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_data_type(i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_dim_idx(1,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_dim_idx(2,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_dim_idx(3,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_dim_idx(4,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_dim_idx(5,i_dummy+1)
+       i_dummy = i_dummy+1
     ENDDO
+    input%L2_ngrid_fields = i_dummy
+
     ! CTM fields to grid
     errmsg = 'Error reading '// CTM_grid_fields_str
     i_dummy = 0
     CALL skip_to_filemark(funit_ctr, CTM_grid_fields_str, &
          lastline, local_error)
+    i_dummy = 0
     DO
+       pos1 = 1
        READ(funit_ctr, '(A)', ERR = 98, IOSTAT=local_error) tmpline
-       IF ( tmpline(2:2) .EQ. ' ') EXIT
-       input%CTM_grid_fields(i_dummy+1) = tmpline
-       i_dummy = i_dummy + 1
+       IF (tmpline(2:2) .EQ. ' ') EXIT
+       pos2 = INDEX(tmpline(pos1:),":")
+       input%CTM_grid_fields(i_dummy+1) = tmpline(pos1:pos1+pos2-2) 
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_data_type(i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_dim_idx(1,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_dim_idx(2,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_dim_idx(3,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_dim_idx(4,i_dummy+1)
+       pos1 = pos1 + pos2 + 1
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_dim_idx(5,i_dummy+1)
+       i_dummy = i_dummy+1
     ENDDO
+    input%CTM_ngrid_fields = i_dummy
+
     ! L2 filters
     errmsg = 'Error reading '// L2_filters_str
     CALL skip_to_filemark(funit_ctr, L2_filters_str, &

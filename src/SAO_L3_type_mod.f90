@@ -30,7 +30,13 @@ MODULE SAO_L3_type_mod
      CHARACTER(LEN=MAXLEN), DIMENSION(5)  :: L2_coor_fields ! L2 field names containing geolocation information
      CHARACTER(LEN=MAXLEN), DIMENSION(5)  :: CTM_coor_fields ! CTM field names containing geolocation information
      CHARACTER(LEN=MAXLEN), DIMENSION(50) :: L2_grid_fields ! L2 field names to be gridded
+     INTEGER*4                            :: L2_ngrid_fields ! Number of L2 field to be gridded
+     INTEGER*4, DIMENSION(50)             :: L2_grid_fields_data_type ! Data type for  L2 fields to be gridded
+     INTEGER*4, DIMENSION(5,50)           :: L2_grid_fields_dim_idx ! L3 dim idx
      CHARACTER(LEN=MAXLEN), DIMENSION(50) :: CTM_grid_fields ! CTM field names to be gridded
+     INTEGER*4                            :: CTM_ngrid_fields ! Number of CTM fields to be gridded
+     INTEGER*4, DIMENSION(50)             :: CTM_grid_fields_data_type ! Data type for CTM fields to be gridded
+     INTEGER*4, DIMENSION(5,50)           :: CTM_grid_fields_dim_idx ! L3 dim idx
      INTEGER*4                            :: n_L2_filter ! Number of L2 filters
      CHARACTER(LEN=MAXLEN), DIMENSION(50) :: L2_filter_field ! L2 field names to be used as filters
      INTEGER*4, DIMENSION(50)             :: L2_filter_logic ! Number of L2 filters
@@ -41,10 +47,37 @@ MODULE SAO_L3_type_mod
      INTEGER*4, DIMENSION(50)             :: CTM_filter_logic ! Number of L2 filters
      INTEGER*4, DIMENSION(2,50)           :: CTM_filter_arith ! Number of L2 filters
      REAL*8, DIMENSION(2,50)              :: CTM_filter_value ! CTM filter values to define filters
-!--------------
      INTEGER*4                            :: Gridding_option ! Gridding option
      LOGICAL                              :: AMF_recalculation = .FALSE. ! Logical to re compute AMF
-     CHARACTER(LEN=MAXLEN), DIMENSION(6)  :: AMF_recalculation_fields    ! Fields involved in AMF computation
+     CHARACTER(LEN=MAXLEN), DIMENSION(6)  :: AMF_recalculation_fields    ! Fields involved in AMF computation     
   END type INPUT_FILE_TYPE
+
+  ! --------------------------------------
+  ! TYPE to store output grid readed from
+  ! file specified in control file (Output
+  ! Grid Input field).
+  ! Each dimension of the grid needs to be
+  ! written in the input file with the
+  ! following information
+  ! -Dimension name
+  ! -Dimension idx, dimension # points
+  ! -Dimension values(1 each line)
+  ! --------------------------------------
+  TYPE OUTPUT_GRID_TYPE
+     CHARACTER(MAXLEN)                 :: out_dim_name ! Dimension name (we can output to L3 file)
+     INTEGER*4                         :: out_dim_idx  ! Dimension bookeeping index (it should match CTM and L2 files)
+     INTEGER*4                         :: out_dim_size ! Dimension size
+     REAL*8, DIMENSION(:), ALLOCATABLE :: out_dim_val  ! Dimension values
+  END type OUTPUT_GRID_TYPE
+
+  ! -----------------------------
+  ! TYPE to hold output variables
+  ! -----------------------------
+  TYPE OUTPUT_L3_TYPE
+     CHARACTER(MAXLEN) :: name
+     INTEGER*4, DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_int
+     REAL*4,    DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_real_4
+     REAL*8,    DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_real_8
+  END type OUTPUT_L3_TYPE
 
 END MODULE SAO_L3_type_mod
