@@ -1,7 +1,8 @@
 MODULE SAO_L3_variables_mod
 
   USE SAO_L3_parameters_mod, ONLY:MAXLEN
-  USE SAO_L3_type_mod, ONLY: INPUT_FILE_TYPE, OUTPUT_GRID_TYPE, OUTPUT_L3_TYPE
+  USE SAO_L3_type_mod, ONLY: INPUT_FILE_TYPE, OUTPUT_GRID_TYPE, &
+       OUTPUT_L3_TYPE, INPUT_L2_TYPE
 
   IMPLICIT NONE
 
@@ -24,11 +25,17 @@ MODULE SAO_L3_variables_mod
   TYPE(OUTPUT_GRID_TYPE), DIMENSION(:), ALLOCATABLE :: out_grid !Data for each
                                                                 !dimension
 
-  ! -----------------------
-  ! L3 L2 and CTM variables
-  ! -----------------------
+  ! -------------------
+  ! L3 output variables
+  ! -------------------
   TYPE(OUTPUT_L3_TYPE), DIMENSION(:), ALLOCATABLE :: L3_output_L2
   TYPE(OUTPUT_L3_TYPE), DIMENSION(:), ALLOCATABLE :: L3_output_CTM
+
+  ! -------------------
+  ! L2 input variables
+  ! -------------------
+  TYPE(INPUT_L2_TYPE), DIMENSION(:), ALLOCATABLE :: L2_data
+  TYPE(INPUT_L2_TYPE), DIMENSION(:), ALLOCATABLE :: CTM_data
 
   ! ---------------
   ! Error variables

@@ -127,9 +127,13 @@ CONTAINS
        pos2 = INDEX(tmpline(pos1:),":")
        READ(tmpline(pos1:pos1+pos2-2),*) input%L2_fields_data_norm(input%n_L2_fields+1)
        pos1 = pos1 + pos2 + 1
-       READ(tmpline(pos1:),*) input%L2_fields_data_type(input%n_L2_fields+1)
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_fields_data_type(input%n_L2_fields+1)
+       pos1 = pos1 + pos2 + 1
+       READ(tmpline(pos1:),*) input%L2_fields_idx(input%n_L2_fields+1)
        input%n_L2_fields = input%n_L2_fields+1
     ENDDO
+
     ! CTM fields to be read
     errmsg = 'Error reading '// CTM_read_fields_str
     input%n_CTM_fields = 0
@@ -145,7 +149,10 @@ CONTAINS
        pos2 = INDEX(tmpline(pos1:),":")
        READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_fields_data_norm(input%n_CTM_fields+1)
        pos1 = pos1 + pos2 + 1
-       READ(tmpline(pos1:),*) input%CTM_fields_data_type(input%n_CTM_fields+1)
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_fields_data_type(input%n_CTM_fields+1)
+       pos1 = pos1 + pos2 + 1
+       READ(tmpline(pos1:),*) input%CTM_fields_idx(input%n_CTM_fields+1)
        input%n_CTM_fields = input%n_CTM_fields+1
     ENDDO
     ! L3 output file
@@ -162,22 +169,22 @@ CONTAINS
     errmsg = 'Error reading '// L2_coor_str
     CALL skip_to_filemark(funit_ctr, L2_coor_str, &
          lastline, local_error)
-    i_dummy = 0
+    i_dummy = 1
     DO
        READ(funit_ctr, '(A)', ERR = 98, IOSTAT=local_error) tmpline
-       IF ( tmpline(2:2) .EQ. ' ') EXIT
-       input%L2_coor_fields(i_dummy+1) = tmpline
+       IF (tmpline(1:1) .EQ. ' ') EXIT
+       READ(tmpline, *) input%L2_coor_fields_idx(i_dummy)
        i_dummy = i_dummy + 1
     ENDDO
     ! CTM coordinates fields
     errmsg = 'Error reading '// CTM_coor_str
     CALL skip_to_filemark(funit_ctr, CTM_coor_str, &
          lastline, local_error)
-    i_dummy = 0
+    i_dummy = 1
     DO
        READ(funit_ctr, '(A)', ERR = 98, IOSTAT=local_error) tmpline
-       IF ( tmpline(2:2) .EQ. ' ') EXIT
-       input%CTM_coor_fields(i_dummy+1) = tmpline
+       IF (tmpline(1:1) .EQ. ' ') EXIT
+       READ(tmpline, *) input%CTM_coor_fields_idx(i_dummy)
        i_dummy = i_dummy + 1
     ENDDO
     ! L2 fields to grid
@@ -191,6 +198,9 @@ CONTAINS
        IF (tmpline(2:2) .EQ. ' ') EXIT
        pos2 = INDEX(tmpline(pos1:),":")
        input%L2_grid_fields(i_dummy+1) = tmpline(pos1:pos1+pos2-2) 
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_idx(i_dummy+1)
        pos1 = pos1 + pos2 + 1
        pos2 = INDEX(tmpline(pos1:),":")
        READ(tmpline(pos1:pos1+pos2-2),*) input%L2_grid_fields_data_type(i_dummy+1)
@@ -211,7 +221,6 @@ CONTAINS
        i_dummy = i_dummy+1
     ENDDO
     input%L2_ngrid_fields = i_dummy
-
     ! CTM fields to grid
     errmsg = 'Error reading '// CTM_grid_fields_str
     i_dummy = 0
@@ -224,6 +233,9 @@ CONTAINS
        IF (tmpline(2:2) .EQ. ' ') EXIT
        pos2 = INDEX(tmpline(pos1:),":")
        input%CTM_grid_fields(i_dummy+1) = tmpline(pos1:pos1+pos2-2) 
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_idx(i_dummy+1)
        pos1 = pos1 + pos2 + 1
        pos2 = INDEX(tmpline(pos1:),":")
        READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_grid_fields_data_type(i_dummy+1)
@@ -258,6 +270,9 @@ CONTAINS
        input%L2_filter_field(input%n_L2_filter+1) = tmpline(pos1:pos1+pos2-2) 
        pos1 = pos1 + pos2 + 1
        pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%L2_filter_idx(input%n_L2_filter+1)
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
        READ(tmpline(pos1:pos1+pos2-2),*) input%L2_filter_logic(input%n_L2_filter+1)
        pos1 = pos1 + pos2 + 1
        pos2 = INDEX(tmpline(pos1:),":")
@@ -283,6 +298,9 @@ CONTAINS
        IF ( tmpline(2:2) .EQ. ' ') EXIT
        pos2 = INDEX(tmpline(pos1:),":")
        input%CTM_filter_field(input%n_CTM_filter+1) = tmpline(pos1:pos1+pos2-2) 
+       pos1 = pos1 + pos2 + 1
+       pos2 = INDEX(tmpline(pos1:),":")
+       READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_filter_idx(input%n_CTM_filter+1)
        pos1 = pos1 + pos2 + 1
        pos2 = INDEX(tmpline(pos1:),":")
        READ(tmpline(pos1:pos1+pos2-2),*) input%CTM_filter_logic(input%n_CTM_filter+1)
