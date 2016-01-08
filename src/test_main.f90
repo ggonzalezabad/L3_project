@@ -57,7 +57,7 @@ PROGRAM test_main
   ! Loop over L2 files
   ! ------------------
   DO ifile = 1, n_L2_files
-     print*, ifile
+     print*, TRIM(ADJUSTL(L2_files(ifile)))
      CALL read_he5_file(TRIM(ADJUSTL(L2_files(ifile))), errstat)
 
      ! ---------------------------

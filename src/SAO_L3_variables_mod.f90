@@ -1,6 +1,6 @@
 MODULE SAO_L3_variables_mod
 
-  USE SAO_L3_parameters_mod, ONLY:MAXLEN
+  USE SAO_L3_parameters_mod, ONLY:MAXLEN, rp
   USE SAO_L3_type_mod, ONLY: INPUT_FILE_TYPE, OUTPUT_GRID_TYPE, &
        OUTPUT_L3_TYPE, INPUT_L2_TYPE
 

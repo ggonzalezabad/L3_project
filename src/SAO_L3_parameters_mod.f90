@@ -11,4 +11,9 @@ MODULE SAO_L3_parameters_mod
   INTEGER*4, PARAMETER :: funit_L2       = 12 !L2 file list
   INTEGER*4, PARAMETER :: funit_out_grid = 13 !Output grid file
 
+  ! ----------------------
+  ! Real numbers precision
+  ! ----------------------
+  INTEGER*4, PARAMETER :: rp = 4
+
 END MODULE SAO_L3_parameters_mod

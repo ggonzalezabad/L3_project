@@ -88,8 +88,7 @@ SUBROUTINE read_he5_file(filename, local_error)
      ! Now that we have the dimensions of the dataset and we can allocate the L2 variable
      ! to hold the data. The datatype is obtained from input file for now. We can try to
      ! add another layer of flexibility by extracting this info from L2 file prior to
-     ! allocation. At this point I'm creating options for INTEGER*2, INTEGER*4, REAL*4 and
-     ! REAL*8
+     ! allocation. At this point I'm creating options for INTEGER, REAL*4 and REAL*8
      SELECT CASE (input%L2_fields_data_type(ifield))
      CASE (2)
         IF (rank .EQ. 1) THEN 
@@ -97,7 +96,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_1D_int_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_1D_int_4, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_1D_int_4, KIND=rp),size_mask)
 
         END IF
         IF (rank .EQ. 2) THEN 
@@ -105,7 +104,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_2D_int_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_2D_int_4, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_2D_int_4, KIND=rp),size_mask)
 
         END IF
         IF (rank .EQ. 3) THEN 
@@ -113,7 +112,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_3D_int_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-           RESHAPE(REAL(dummy_3D_int_4, KIND=4),size_mask)
+           RESHAPE(REAL(dummy_3D_int_4, KIND=rp),size_mask)
 
         END IF
         IF (rank .EQ. 4) THEN 
@@ -121,7 +120,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_4D_int_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-           RESHAPE(REAL(dummy_4D_int_4, KIND=4),size_mask)
+           RESHAPE(REAL(dummy_4D_int_4, KIND=rp),size_mask)
 
         END IF
      CASE (4)
@@ -130,7 +129,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_1D_real_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_1D_real_4, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_1D_real_4, KIND=rp),size_mask)
            
         END IF
         IF (rank .EQ. 2) THEN
@@ -138,7 +137,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_2D_real_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_2D_real_4, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_2D_real_4, KIND=rp),size_mask)
            
         END IF
         IF (rank .EQ. 3) THEN
@@ -146,7 +145,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_3D_real_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_3D_real_4, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_3D_real_4, KIND=rp),size_mask)
 
         END IF
         IF (rank .EQ. 4) THEN
@@ -154,7 +153,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_4D_real_4)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_4D_real_4, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_4D_real_4, KIND=rp),size_mask)
 
         END IF
      CASE (8)
@@ -163,7 +162,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_1D_real_8)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_1D_real_8, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_1D_real_8, KIND=rp),size_mask)
      
         END IF
         IF (rank .EQ. 2) THEN
@@ -171,14 +170,14 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_2D_real_8)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_2D_real_8, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_2D_real_8, KIND=rp),size_mask)
         END IF
         IF (rank .EQ. 3) THEN
            ALLOCATE(dummy_3D_real_8(1:dims(1),1:dims(2),1:dims(3)))
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_3D_real_8)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_3D_real_8, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_3D_real_8, KIND=rp),size_mask)
            
         END IF
         IF (rank .EQ. 4) THEN
@@ -186,7 +185,7 @@ SUBROUTINE read_he5_file(filename, local_error)
            CALL H5ReadDataset(filename, TRIM(ADJUSTL(input%L2_fields(ifield))), &
                 dummy_4D_real_8)
            L2_data(ifield)%data(1:size_mask(1),1:size_mask(2),1:size_mask(3),1:size_mask(4)) = &
-                RESHAPE(REAL(dummy_4D_real_8, KIND=4),size_mask)
+                RESHAPE(REAL(dummy_4D_real_8, KIND=rp),size_mask)
 
         END IF
      CASE DEFAULT

@@ -7,12 +7,6 @@ MODULE SAO_L3_type_mod
   ! ====================================================
   ! TYPE INPUT_FILE_TYPE
   !      Keep values of input file (input_nightmare.inp)
-  !      Data types definitions: 1 -- > INTEGER*2
-  !                              2 -- > INTEGER*4
-  !                              4 -- > REAL 4
-  !                              8 -- > REAL 8
-  !      Gridding options: 1 -- > Tesselation
-  !                        2 -- > Point Spread Function
   ! ====================================================
   TYPE INPUT_FILE_TYPE
      LOGICAL                              :: USE_CTM = .FALSE. ! Use CTM LOGICAL
@@ -21,12 +15,12 @@ MODULE SAO_L3_type_mod
      CHARACTER(LEN=MAXLEN)                :: grid_filename ! Output grid definition filename
      INTEGER*4                            :: n_L2_fields ! # of fields to be read from L2 files
      CHARACTER(LEN=MAXLEN), DIMENSION(50) :: L2_fields ! Field names to be read from L2 files
-     REAL*8, DIMENSION(50)                :: L2_fields_data_norm ! Normalization factor for L2 fields to be read
+     REAL(KIND=rp), DIMENSION(50)         :: L2_fields_data_norm ! Normalization factor for L2 fields to be read
      INTEGER*4, DIMENSION(50)             :: L2_fields_data_type ! Data type for  L2 fields to be read
      INTEGER*4, DIMENSION(50)             :: L2_fields_idx ! Data idx for  L2 fields to be read
      INTEGER*4                            :: n_CTM_fields ! # of fields to be read from CTM files
      CHARACTER(LEN=MAXLEN), DIMENSION(50) :: CTM_fields ! Field names to be read from CTM files
-     REAL*8, DIMENSION(50)                :: CTM_fields_data_norm ! Normalization factor for CTM fields to be read
+     REAL(KIND=rp), DIMENSION(50)         :: CTM_fields_data_norm ! Normalization factor for CTM fields to be read
      INTEGER*4, DIMENSION(50)             :: CTM_fields_data_type ! Data type for CTM fields to be read
      INTEGER*4, DIMENSION(50)             :: CTM_fields_idx ! Data idx for CTM fields to be read
      INTEGER*4, DIMENSION(5)              :: L2_coor_fields_idx ! L2 field idx containing geolocation information
@@ -46,13 +40,13 @@ MODULE SAO_L3_type_mod
      INTEGER*4, DIMENSION(50)             :: L2_filter_idx   ! L2 filters idx
      INTEGER*4, DIMENSION(50)             :: L2_filter_logic ! Logical for L2 filters
      INTEGER*4, DIMENSION(2,50)           :: L2_filter_arith ! Arithmetic logic for L2 filters
-     REAL*4, DIMENSION(2,50)              :: L2_filter_value ! L2 filter values to define filters
+     REAL(KIND=rp), DIMENSION(2,50)       :: L2_filter_value ! L2 filter values to define filters
      INTEGER*4                            :: n_CTM_filter ! Number of CTM filters
      CHARACTER(LEN=MAXLEN), DIMENSION(50) :: CTM_filter_field ! CTM field names to be used as filters
      INTEGER*4, DIMENSION(50)             :: CTM_filter_idx   ! CTM filters idx
      INTEGER*4, DIMENSION(50)             :: CTM_filter_logic ! Logical for CTM filters
      INTEGER*4, DIMENSION(2,50)           :: CTM_filter_arith ! Arithmetic logic for CTM filters
-     REAL*4, DIMENSION(2,50)              :: CTM_filter_value ! CTM filter values to define filters
+     REAL(KIND=rp), DIMENSION(2,50)       :: CTM_filter_value ! CTM filter values to define filters
      INTEGER*4                            :: Gridding_option ! Gridding option
      LOGICAL                              :: AMF_recalculation = .FALSE. ! Logical to re compute AMF
      CHARACTER(LEN=MAXLEN), DIMENSION(6)  :: AMF_recalculation_fields    ! Fields involved in AMF computation     
@@ -70,10 +64,11 @@ MODULE SAO_L3_type_mod
   ! -Dimension values(1 each line)
   ! --------------------------------------
   TYPE OUTPUT_GRID_TYPE
-     CHARACTER(MAXLEN)                 :: out_dim_name ! Dimension name (we can output to L3 file)
-     INTEGER*4                         :: out_dim_idx  ! Dimension bookeeping index (it should match CTM and L2 files)
-     INTEGER*4                         :: out_dim_size ! Dimension size
-     REAL*8, DIMENSION(:), ALLOCATABLE :: out_dim_val  ! Dimension values
+     CHARACTER(MAXLEN)                        :: out_dim_name ! Dimension name (we can output to L3 file)
+     INTEGER*4                                :: out_dim_idx  ! Dimension bookeeping index 
+                                                              ! (it should match CTM and L2 files)
+     INTEGER*4                                :: out_dim_size ! Dimension size
+     REAL(KIND=rp), DIMENSION(:), ALLOCATABLE :: out_dim_val  ! Dimension values
   END type OUTPUT_GRID_TYPE
 
   ! -----------------------------
@@ -81,9 +76,9 @@ MODULE SAO_L3_type_mod
   ! -----------------------------
   TYPE OUTPUT_L3_TYPE
      CHARACTER(MAXLEN) :: name
-     INTEGER*4, DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_int
-     REAL*4,    DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_real_4
-     REAL*8,    DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_real_8
+     INTEGER*4,     DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_int
+     REAL(KIND=rp), DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_real_4
+     REAL(KIND=rp), DIMENSION(:,:,:,:,:), ALLOCATABLE :: data_real_8
   END type OUTPUT_L3_TYPE
 
   ! ----------------------------
@@ -91,7 +86,7 @@ MODULE SAO_L3_type_mod
   ! ----------------------------
   TYPE INPUT_L2_TYPE
      CHARACTER(MAXLEN) :: name
-     REAL*4,    DIMENSION(:,:,:,:), ALLOCATABLE :: data
+     REAL(KIND=rp), DIMENSION(:,:,:,:), ALLOCATABLE :: data
   END type INPUT_L2_TYPE
 
   ! -----------------------------
